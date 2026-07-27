@@ -1,0 +1,14 @@
+[
+  { "id": "p001", "name": "Amanecer Comunitario", "category": "noticias", "weeklyBudget": 180.00, "weeklySlots": 5, "active": true },
+  { "id": "p002", "name": "Ritmos del Barrio", "category": "musical", "weeklyBudget": 120.50, "weeklySlots": 3, "active": true },
+  { "id": "p003", "name": "Voces Campesinas", "category": "cultural", "weeklyBudget": 90.00, "weeklySlots": 2, "active": true },
+  { "id": "p004", "name": "Deporte al Aire", "category": "deportivo", "weeklyBudget": 150.75, "weeklySlots": 4, "active": true },
+  { "id": "p005", "name": "El Rincón Infantil", "category": "infantil", "weeklyBudget": 60.00, "weeklySlots": 2, "active": true },
+  { "id": "p006", "name": "Salsa y Sabor", "category": "musical", "weeklyBudget": 110.25, "weeklySlots": 3, "active": false },
+  { "id": "p007", "name": "Tribuna Vecinal", "category": "noticias", "weeklyBudget": 200.00, "weeklySlots": 5, "active": true },
+  { "id": "p008", "name": "Palabra de Fe", "category": "religioso", "weeklyBudget": 40.00, "weeklySlots": 1, "active": true },
+  { "id": "p009", "name": "Retro Vinilo", "category": "musical", "weeklyBudget": 85.90, "weeklySlots": 2, "active": false },
+  { "id": "p010", "name": "Historias del Barrio", "category": "cultural", "weeklyBudget": 95.00, "weeklySlots": 2, "active": true },
+  { "id": "p011", "name": "Consultorio de Salud", "category": "cultural", "weeklyBudget": 130.00, "weeklySlots": 3, "active": true },
+  { "id": "p012", "name": "La Hora del Rock", "category": "musical", "weeklyBudget": 75.00, "weeklySlots": 2, "active": false }
+]

@@ -4,7 +4,7 @@
 
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import type { Item } from './types.js';
+import type { Program } from './types.js';
 
 // TODO: Implementar la función readItems
 // Debe:
@@ -27,3 +27,15 @@ import type { Item } from './types.js';
 //     throw new Error(`...`);
 //   }
 // }
+
+// Implementación — dominio Radio Comunitaria: lee data/programs.json
+export async function readPrograms(): Promise<Program[]> {
+  const filePath = join(import.meta.dirname, '..', 'data', 'programs.json');
+  try {
+    const raw = await readFile(filePath, 'utf-8');
+    return JSON.parse(raw) as Program[];
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`No se pudo leer el archivo de programas en "${filePath}": ${message}`);
+  }
+}

@@ -5,14 +5,14 @@
 // Ejemplo: Book, Medicine, Member, Dish, Room...
 
 // TODO: Renombrar 'Item' al recurso de tu dominio asignado
-export interface Item {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-  active: boolean;
-}
+// export interface Item {
+//   id: string;
+//   name: string;
+//   category: string;
+//   price: number;
+//   stock: number;
+//   active: boolean;
+// }
 
 // TODO: Agregar campos específicos de tu dominio
 // Ejemplo para Biblioteca:
@@ -25,14 +25,27 @@ export interface Item {
 //   available: boolean;
 // }
 
+// Dominio asignado: Radio Comunitaria
+// Recurso: Program (programa radial)
+// - price  → weeklyBudget (costo de producción semanal)
+// - stock  → weeklySlots (franjas horarias asignadas por semana)
+export interface Program {
+  id: string;
+  name: string;
+  category: string;
+  weeklyBudget: number;
+  weeklySlots: number;
+  active: boolean;
+}
+
 // Resumen que el procesador debe calcular
-export interface ItemSummary {
+export interface ProgramSummary {
   total: number;
   active: number;
   inactive: number;
   averagePrice: number;
-  mostExpensive: Item;
-  cheapest: Item;
+  mostExpensive: Program;
+  cheapest: Program;
   categories: string[];
 }
 
@@ -40,6 +53,6 @@ export interface ItemSummary {
 export interface Report {
   generatedAt: string;
   appliedFilter: string | null;
-  summary: ItemSummary;
-  items: Item[];
+  summary: ProgramSummary;
+  items: Program[];
 }
