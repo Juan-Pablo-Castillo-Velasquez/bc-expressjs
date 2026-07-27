@@ -1,7 +1,7 @@
 {
   "name": "semana01-proyecto",
   "version": "1.0.0",
-  "description": "Proyecto semanal — Procesador de datos con Node.js + TypeScript",
+  "description": "Proyecto semanal — Procesador de datos con Node.js + TypeScript (Radio Comunitaria)",
   "engines": {
     "node": ">=22.0.0"
   },
