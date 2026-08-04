@@ -17,7 +17,7 @@ export function createApp(): Application {
   // PASO 2: Registrar el router de items
   // ============================================
   // Descomenta las siguientes líneas:
-  // app.use('/api/v1/items', itemsRouter);
+  app.use('/api/v1/items', itemsRouter);
 
   return app;
 }

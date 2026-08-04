@@ -19,29 +19,29 @@ export function createApp(): Application {
   // Descomenta y ordena correctamente los middlewares:
   //
   // 1. Parseo de JSON
-  // app.use(express.json());
+  app.use(express.json());
   //
   // 2. Logger (ver todas las peticiones)
-  // app.use(logger);
+  app.use(logger);
   //
   // 3. Auth (proteger rutas con API key)
-  // app.use(auth);
+  app.use(auth);
   //
   // 4. Rutas
-  // app.get('/api/v1/items', (_req, res) => { res.json(items); });
-  // app.post('/api/v1/items', (req, res) => {
-  //   const newItem: Item = { id: items.length + 1, name: req.body.name as string };
-  //   items.push(newItem);
-  //   res.status(201).json(newItem);
-  // });
+  app.get('/api/v1/items', (_req, res) => { res.json(items); });
+  app.post('/api/v1/items', (req, res) => {
+    const newItem: Item = { id: items.length + 1, name: req.body.name as string };
+    items.push(newItem);
+    res.status(201).json(newItem);
+  });
   //
   // 5. Handler de rutas no encontradas (404)
-  // app.use((_req, res) => {
-  //   res.status(404).json({ error: 'Route not found' });
-  // });
+  app.use((_req, res) => {
+    res.status(404).json({ error: 'Route not found' });
+  });
   //
   // 6. Error handler — SIEMPRE el último app.use()
-  // app.use(errorHandler);
+  app.use(errorHandler);
 
   return app;
 }
