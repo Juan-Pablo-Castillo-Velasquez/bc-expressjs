@@ -24,7 +24,7 @@ export function createApp(): Application {
   });
 
   // 4. Rutas del recurso principal
-  app.use('/api/v1/sponsors', sponsorsRouter);
+  app.use('/api/v1/sponsors', sponsorsRouter);  
 
   // 5. Handler para rutas no encontradas (404)
   app.use((_req, res) => {
