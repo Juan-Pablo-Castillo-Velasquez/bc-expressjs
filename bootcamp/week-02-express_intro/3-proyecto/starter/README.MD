@@ -220,3 +220,14 @@ Las imágenes están en la carpeta `evidencias/` en la raíz del proyecto.
 
 ![DELETE](./evidencias/05-delete.png)
 
+### Caso de error — Validación (400)
+
+Petición POST sin los campos obligatorios `companyName` y `email`.
+
+![Validation error](./evidencias/06-validation-error.png)
+
+### Caso de error — Recurso no encontrado (404)
+
+Petición GET a un id de sponsor que no existe.
+
+![Not found error](./evidencias/07-not-found-error.png)
