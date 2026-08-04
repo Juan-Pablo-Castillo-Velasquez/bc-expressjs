@@ -1,45 +1,54 @@
 import { Router } from 'express';
 import * as store from '../store.js';
-import type { CreateItemDto, UpdateItemDto } from '../types.js';
+import type { CreateSponsorDto, UpdateSponsorDto } from '../types.js';
 
-export const itemsRouter = Router();
+export const sponsorsRouter = Router();
 
-// GET /items — Listar todos los recursos
-// TODO: Implementar usando store.getAll()
-// Status: 200
-itemsRouter.get('/', (_req, res) => {
-  // TODO: retornar todos los ítems
-  res.json([]);
+// GET /api/v1/sponsors — Listar todos los patrocinadores
+sponsorsRouter.get('/', (_req, res) => {
+  res.status(200).json(store.getAll());
 });
 
-// GET /items/:id — Obtener recurso por ID
-// TODO: Implementar usando store.getById(id)
-// Status: 200 si existe | 404 si no existe
-itemsRouter.get('/:id', (req, res) => {
-  // TODO: obtener el ítem y manejar 404
-  res.status(404).json({ error: 'Not implemented' });
+// GET /api/v1/sponsors/:id — Obtener patrocinador por ID
+sponsorsRouter.get('/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const sponsor = store.getById(id);
+
+  if (!sponsor) {
+    return res.status(404).json({ error: 'Sponsor not found' });
+  }
+
+  res.status(200).json(sponsor);
 });
 
-// POST /items — Crear nuevo recurso
-// TODO: Implementar usando store.create(dto)
-// Status: 201 con el recurso creado
-itemsRouter.post('/', (req, res) => {
-  // TODO: crear el ítem y retornar 201
-  res.status(501).json({ error: 'Not implemented' });
+// POST /api/v1/sponsors — Crear nuevo patrocinador
+sponsorsRouter.post('/', (req, res) => {
+  const dto: CreateSponsorDto = req.body;
+  const newSponsor = store.create(dto);
+  res.status(201).json(newSponsor);
 });
 
-// PUT /items/:id — Actualizar recurso completo
-// TODO: Implementar usando store.update(id, dto)
-// Status: 200 con el recurso actualizado | 404 si no existe
-itemsRouter.put('/:id', (req, res) => {
-  // TODO: actualizar el ítem y manejar 404
-  res.status(501).json({ error: 'Not implemented' });
+// PUT /api/v1/sponsors/:id — Actualizar patrocinador
+sponsorsRouter.put('/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const dto: UpdateSponsorDto = req.body;
+  const updated = store.update(id, dto);
+
+  if (!updated) {
+    return res.status(404).json({ error: 'Sponsor not found' });
+  }
+
+  res.status(200).json(updated);
 });
 
-// DELETE /items/:id — Eliminar recurso
-// TODO: Implementar usando store.remove(id)
-// Status: 204 sin body | 404 si no existe
-itemsRouter.delete('/:id', (req, res) => {
-  // TODO: eliminar el ítem, retornar 204 o 404
-  res.status(501).json({ error: 'Not implemented' });
+// DELETE /api/v1/sponsors/:id — Eliminar patrocinador
+sponsorsRouter.delete('/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const removed = store.remove(id);
+
+  if (!removed) {
+    return res.status(404).json({ error: 'Sponsor not found' });
+  }
+
+  res.status(204).send();
 });
