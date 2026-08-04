@@ -1,43 +1,56 @@
-import type { Item, CreateItemDto, UpdateItemDto } from './types.js';
+import type { Sponsor, CreateSponsorDto, UpdateSponsorDto } from './types.js';
 
 // Store en memoria — simula una base de datos sin persistencia
-// Los datos se pierden al reiniciar el servidor (se usará BD a partir de week-05)
-const items: Item[] = [];
+const sponsorsList: Sponsor[] = []; // Cambiado a minúscula/plural para evitar conflictos de nombres
 let nextId = 1;
 
-// TODO: Implementar getAll
-// Debe retornar todos los ítems del array
-export function getAll(): Item[] {
-  // TODO: retornar el array de items
-  return [];
+// Retorna todos los patrocinadores del array
+export function getAll(): Sponsor[] {
+  return sponsorsList;
 }
 
-// TODO: Implementar getById
-// Debe retornar el ítem con el id dado, o undefined si no existe
-export function getById(id: number): Item | undefined {
-  // TODO: buscar y retornar el ítem
-  return undefined;
+// Retorna el patrocinador con el id dado, o undefined si no existe
+export function getById(id: number): Sponsor | undefined {
+  return sponsorsList.find(sponsor => sponsor.id === id);
 }
 
-// TODO: Implementar create
-// Debe crear un nuevo ítem con un id autoincremental y retornarlo
-export function create(data: CreateItemDto): Item {
-  // TODO: crear, guardar y retornar el nuevo ítem
-  // Pista: usa nextId++ para generar el id
-  const newItem: Item = { id: nextId++, ...data };
-  return newItem;
+// Crea un nuevo patrocinador con un id autoincremental y lo guarda
+// SOLUCIÓN: Se cambia el tipo de 'data' a CreateSponsorDto para evitar el error del ID
+export function create(data: CreateSponsorDto): Sponsor {
+  const newSponsor: Sponsor = { 
+    id: nextId++, 
+    ...data,
+    createdAt: new Date() 
+  };
+  sponsorsList.push(newSponsor);
+  return newSponsor;
 }
 
-// TODO: Implementar update
-// Debe actualizar el ítem con el id dado y retornarlo, o undefined si no existe
-export function update(id: number, data: UpdateItemDto): Item | undefined {
-  // TODO: buscar el ítem, actualizar sus campos y retornarlo
-  return undefined;
+// Actualiza el patrocinador con el id dado y lo retorna, o undefined si no existe
+export function update(id: number, data: UpdateSponsorDto): Sponsor | undefined {
+  const sponsorIndex = sponsorsList.findIndex(sponsor => sponsor.id === id);
+  
+  if (sponsorIndex === -1) {
+    return undefined;
+  }
+
+  // Mezcla los datos existentes con los nuevos cambios recibidos
+  sponsorsList[sponsorIndex] = {
+    ...sponsorsList[sponsorIndex],
+    ...data
+  };
+
+  return sponsorsList[sponsorIndex];
 }
 
-// TODO: Implementar remove
-// Debe eliminar el ítem con el id dado y retornar true, o false si no existe
+// Elimina el patrocinador con el id dado y retorna true, o false si no existe
 export function remove(id: number): boolean {
-  // TODO: buscar y eliminar el ítem, retornar éxito
-  return false;
+  const sponsorIndex = sponsorsList.findIndex(sponsor => sponsor.id === id);
+  
+  if (sponsorIndex === -1) {
+    return false;
+  }
+
+  sponsorsList.splice(sponsorIndex, 1);
+  return true;
 }

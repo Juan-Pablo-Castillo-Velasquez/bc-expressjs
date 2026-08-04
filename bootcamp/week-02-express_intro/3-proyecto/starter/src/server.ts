@@ -3,14 +3,21 @@ import { createApp } from './app.js';
 const PORT = process.env.PORT ?? '3000';
 const app = createApp();
 
-// TODO: Implementar graceful shutdown
-// El servidor debe cerrarse limpiamente ante SIGTERM o SIGINT.
-// Pistas:
-// - const server = app.listen(...) guarda la referencia al servidor
-// - process.on('SIGTERM', () => server.close(() => { ... }))
-// - process.on('SIGINT', () => server.close(() => { ... }))
-
-// Reemplaza esto con la implementación completa:
-app.listen(Number(PORT), () => {
+const server = app.listen(Number(PORT), () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+function shutdown(signal: string) {
+  console.log(`\n${signal} recibido. Cerrando servidor...`);
+  server.close((err) => {
+    if (err) {
+      console.error('Error al cerrar el servidor:', err);
+      process.exit(1);
+    }
+    console.log('Servidor cerrado correctamente.');
+    process.exit(0);
+  });
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
