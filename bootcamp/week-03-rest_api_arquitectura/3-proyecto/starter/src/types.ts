@@ -1,27 +1,27 @@
 // ============================================
-// TYPES — Adapta estos tipos a tu dominio
+// TYPES — Dominio: Radio Comunitaria
 // ============================================
-// NOTA: Renombra "Item" por el recurso de tu dominio.
-// Ejemplos: Book, Medicine, Member, Dish, Patient, Movie...
-//
-// Agrega o quita campos según las características de tu dominio.
+// Recurso principal de la semana 03: Program (programa radial).
+// Un Program se relaciona con un host (locutor/a), un schedule
+// (franja horaria) y opcionalmente un sponsor (patrocinador).
 
-// TODO: Renombra Item y ajusta los campos a tu dominio asignado
-export interface Item {
+export interface Program {
   id: number;
-  name: string;        // Renombra o elimina según tu dominio
-  description: string; // Ej: price, dosage, plan, genre...
-  active: boolean;     // Ej: available, inStock, published...
+  name: string;          // Nombre del programa, ej: "Voces del Barrio"
+  hostName: string;      // Nombre del host/locutor a cargo
+  schedule: string;      // Franja horaria, ej: "Lunes 08:00-09:00"
+  sponsor: string;       // Patrocinador, "Sin patrocinador" si no aplica
+  active: boolean;       // Si el programa sigue al aire
   createdAt: string;
 }
 
 // DTO para crear — sin campos auto-generados
-export type CreateItemDto = Omit<Item, 'id' | 'createdAt'>;
+export type CreateProgramDto = Omit<Program, 'id' | 'createdAt'>;
 
 // DTO para actualizar — todos los campos opcionales
-export type UpdateItemDto = Partial<CreateItemDto>;
+export type UpdateProgramDto = Partial<CreateProgramDto>;
 
-// Contratos de respuesta (no cambiar nombres — son genéricos)
+// Contratos de respuesta (genéricos, no cambiar nombres)
 export interface SingleResponse<T> {
   data: T;
 }
