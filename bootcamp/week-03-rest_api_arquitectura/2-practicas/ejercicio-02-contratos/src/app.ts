@@ -2,7 +2,7 @@
 // APP — Configuración Express
 // ============================================
 import express from 'express';
-import { programsRouter } from './routes/programs.routes';
+import { booksRouter } from './routes/books.routes';
 import { ErrorResponse } from './types';
 
 const app = express();
@@ -10,12 +10,11 @@ const app = express();
 app.use(express.json());
 
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', week: '03', project: 'radio-comunitaria-api' });
+  res.json({ status: 'ok', week: '03', exercise: '02-contratos' });
 });
 
-app.use('/api/v1/programs', programsRouter);
+app.use('/api/v1/books', booksRouter);
 
-// Error handler — no modificar
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err.message);
   const response: ErrorResponse = {

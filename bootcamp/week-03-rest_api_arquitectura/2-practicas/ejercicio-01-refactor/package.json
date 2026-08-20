@@ -1,7 +1,7 @@
 {
-  "name": "radio-comunitaria-api",
+  "name": "ejercicio-01-refactor",
   "version": "1.0.0",
-  "description": "API REST para Radio Comunitaria - gestion de programas radiales (arquitectura en 4 capas)",
+  "description": "Ejercicio: refactor de app plana a arquitectura en 4 capas",
   "main": "dist/server.js",
   "engines": {
     "node": ">=22.0.0"

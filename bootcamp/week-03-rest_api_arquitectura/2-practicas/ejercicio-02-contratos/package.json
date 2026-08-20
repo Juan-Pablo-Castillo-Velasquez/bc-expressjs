@@ -1,7 +1,7 @@
 {
-  "name": "radio-comunitaria-api",
+  "name": "ejercicio-02-contratos",
   "version": "1.0.0",
-  "description": "API REST para Radio Comunitaria - gestion de programas radiales (arquitectura en 4 capas)",
+  "description": "Ejercicio: contratos de respuesta REST con TypeScript generics",
   "main": "dist/server.js",
   "engines": {
     "node": ">=22.0.0"
