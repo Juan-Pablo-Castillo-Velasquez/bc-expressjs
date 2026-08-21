@@ -1,7 +1,7 @@
 {
-  "name": "week-04-proyecto",
+  "name": "radio-comunitaria-api-week04",
   "version": "1.0.0",
-  "description": "Proyecto semana 04 — Validación, errores y logging",
+  "description": "API REST para Radio Comunitaria - validacion, errores y logging (semana 04)",
   "main": "dist/server.js",
   "engines": {
     "node": ">=22.0.0"
