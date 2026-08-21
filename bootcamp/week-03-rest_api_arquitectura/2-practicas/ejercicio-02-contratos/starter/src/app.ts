@@ -3,6 +3,7 @@
 // ============================================
 import express from 'express';
 import { booksRouter } from './routes/books.routes';
+import { ErrorResponse } from './types';
 
 const app = express();
 
@@ -14,19 +15,13 @@ app.get('/health', (_req, res) => {
 
 app.use('/api/v1/books', booksRouter);
 
-// ============================================
-// PASO 4: Error handler global con ErrorResponse
-// Descomenta el bloque siguiente
-// ============================================
-// import { ErrorResponse } from './types';
-//
-// app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-//   console.error(err.message);
-//   const response: ErrorResponse = {
-//     error: 'Internal Server Error',
-//     message: err.message,
-//   };
-//   res.status(500).json(response);
-// });
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error(err.message);
+  const response: ErrorResponse = {
+    error: 'Internal Server Error',
+    message: err.message,
+  };
+  res.status(500).json(response);
+});
 
 export default app;
