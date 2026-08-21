@@ -1,19 +1,22 @@
 // ============================================
-// TYPES — adapta Item al recurso de tu dominio
-// Ejemplo: Book, Medicine, Member, Dish, etc.
+// TYPES — Dominio: Radio Comunitaria
 // ============================================
+// Recurso principal: Program (programa radial).
+// Un Program se relaciona con un host (locutor/a), un schedule
+// (franja horaria), un sponsor (patrocinador) y su duración.
 
-// TODO: renombra Item y sus campos al recurso de tu dominio asignado
-export interface Item {
+export interface Program {
   id: number;
-  name: string;       // Renombra según tu dominio (title, medicationName, etc.)
-  description: string; // Puedes cambiar este campo por otros relevantes
-  price: number;
-  stock: number;
+  name: string; // Nombre del programa, ej: "Voces del Barrio"
+  hostName: string; // Locutor/a a cargo
+  schedule: string; // Franja horaria, ej: "Lunes 08:00-09:00"
+  sponsor: string; // Patrocinador, "Sin patrocinador" si no aplica
+  durationMinutes: number; // Duración del programa en minutos
+  active: boolean; // Si el programa sigue al aire
   createdAt: Date;
 }
 
-// Tipos de respuesta genéricos — no necesitan cambio
+// Tipos de respuesta — no necesitan cambio
 export interface SingleResponse<T> {
   data: T;
 }
