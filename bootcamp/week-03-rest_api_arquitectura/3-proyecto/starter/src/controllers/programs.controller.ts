@@ -6,6 +6,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import * as service from '../services/programs.service';
+import { ValidationError } from '../services/programs.service';
 import { CreateProgramDto, UpdateProgramDto } from '../types';
 
 export async function getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -36,13 +37,13 @@ export async function getById(req: Request, res: Response, next: NextFunction): 
 export async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const dto = req.body as CreateProgramDto;
-    if (!dto.name || !dto.hostName || !dto.schedule) {
-      res.status(400).json({ error: 'Bad Request', message: 'name, hostName and schedule are required' });
-      return;
-    }
     const program = await service.create(dto);
     res.status(201).json({ data: program });
   } catch (err) {
+    if (err instanceof ValidationError) {
+      res.status(400).json({ error: 'Bad Request', message: err.message });
+      return;
+    }
     next(err);
   }
 }
