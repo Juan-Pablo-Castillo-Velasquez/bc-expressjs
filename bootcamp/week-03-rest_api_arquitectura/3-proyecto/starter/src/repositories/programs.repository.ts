@@ -51,7 +51,8 @@ export async function findAll(): Promise<Program[]> {
 }
 
 export async function findById(id: number): Promise<Program | undefined> {
-  return store.find((program) => program.id === id);
+  const program = store.find((program) => program.id === id);
+  return program ? { ...program } : undefined;
 }
 
 export async function create(dto: CreateProgramDto): Promise<Program> {
