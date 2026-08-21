@@ -7,6 +7,16 @@
 import { CreateProgramDto, UpdateProgramDto, Program, PaginatedResponse, PaginationParams } from '../types';
 import * as repo from '../repositories/programs.repository';
 
+// Error de validación de dominio — el controller lo distingue
+// de errores inesperados y responde 400 en vez de delegar al
+// manejador de errores genérico (500).
+export class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+
 export async function findAll(params: PaginationParams): Promise<PaginatedResponse<Program>> {
   const { page, limit } = params;
   const all = await repo.findAll();
@@ -20,6 +30,11 @@ export async function findById(id: number): Promise<Program | undefined> {
 }
 
 export async function create(dto: CreateProgramDto): Promise<Program> {
+  // Validación de dominio: name, hostName y schedule son obligatorios
+  if (!dto.name || !dto.hostName || !dto.schedule) {
+    throw new ValidationError('name, hostName and schedule are required');
+  }
+
   // Regla de negocio: si no se especifica patrocinador, se asume "Sin patrocinador"
   const normalized: CreateProgramDto = {
     ...dto,
