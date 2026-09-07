@@ -1,5 +1,5 @@
 // Prisma Schema — Proyecto Semana 05
-// Adapta los modelos al dominio asignado por el instructor
+// Dominio: Radio Comunitaria (programs, hosts, schedules, sponsors)
 
 generator client {
   provider = "prisma-client-js"
@@ -10,24 +10,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================================
-// TODO: Define tus modelos según tu dominio asignado
-//
-// Lineamientos:
-//   - Recurso principal con mínimo 6 campos tipados
-//   - Al menos un campo @unique (para demostrar P2002)
-//   - Recurso secundario con relación 1:N
-//   - Timestamps: createdAt y updatedAt
-//
-// Ejemplos:
-//
-// Biblioteca:
-//   model Author { id Int @id @default(autoincrement()); name String; ... }
-//   model Book   { id Int @id @default(autoincrement()); isbn String @unique; authorId Int; ... }
-//
-// Farmacia:
-//   model Category   { id Int @id ...; name String @unique; ... }
-//   model Medication { id Int @id ...; sku String @unique; categoryId Int?; ... }
-//
-// Añade aquí tus modelos:
-// ============================================================
+// Recurso secundario — un Host conduce muchos Programs (1:N)
+model Host {
+  id        Int       @id @default(autoincrement())
+  name      String
+  bio       String?
+  email     String    @unique
+  programs  Program[]
+  createdAt DateTime  @default(now())
+}
+
+// Recurso principal — programas de la radio comunitaria
+model Program {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  description String?
+  genre       String
+  schedule    String
+  sponsor     String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  host   Host? @relation(fields: [hostId], references: [id], onDelete: SetNull)
+  hostId Int?
+}
