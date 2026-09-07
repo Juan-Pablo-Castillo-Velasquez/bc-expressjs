@@ -12,11 +12,7 @@ export async function findAll(page: number, limit: number) {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { createdAt: 'desc' },
-      // ============================================================
-      // PASO 4A: include category en findAll
-      // Descomenta la siguiente línea:
-      // include: { category: true },
-      // ============================================================
+      include: { category: true },
     }),
     prisma.product.count(),
   ]);
@@ -26,11 +22,7 @@ export async function findAll(page: number, limit: number) {
 export async function findById(id: number) {
   const product = await prisma.product.findUnique({
     where: { id },
-    // ============================================================
-    // PASO 4B: include category en findById
-    // Descomenta la siguiente línea:
-    // include: { category: true },
-    // ============================================================
+    include: { category: true },
   });
   return product;
 }

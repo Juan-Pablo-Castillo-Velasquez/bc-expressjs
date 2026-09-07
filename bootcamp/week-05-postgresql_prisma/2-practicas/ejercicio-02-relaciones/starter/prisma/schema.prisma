@@ -9,20 +9,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================================
-// PASO 1: Modelo Category (nueva entidad)
-// Descomenta este modelo completo
-// ============================================================
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  products  Product[]   // Campo virtual — no genera columna en BD
+  createdAt DateTime  @default(now())
+}
 
-// model Category {
-//   id        Int       @id @default(autoincrement())
-//   name      String    @unique
-//   products  Product[]   // Campo virtual — no genera columna en BD
-//   createdAt DateTime  @default(now())
-// }
-
-// Modelo Product — ya definido del ejercicio 01
-// PASO 1: Descomenta las líneas de relación (category y categoryId)
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
@@ -34,7 +27,6 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Descomenta las dos líneas de abajo:
-  // category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  // categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  categoryId Int?
 }
