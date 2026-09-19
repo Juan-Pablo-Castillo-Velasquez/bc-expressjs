@@ -1,12 +1,10 @@
-// ============================================
-// Repositorio de Productos — CRUD + populate('category')
-// ============================================
+// src/repositories/programs.repository.ts — CRUD de Program + populate('sponsor')
 
 import { MongoServerError } from 'mongodb';
 import mongoose from 'mongoose';
-import { Product } from '../models/product.model';
+import { Program } from '../models/program.model';
 import { AppError } from '../errors/AppError';
-import type { CreateProductDto, UpdateProductDto } from '../schemas/product.schema';
+import type { CreateProgramDto, UpdateProgramDto } from '../schemas/program.schema';
 
 export interface PaginatedResult<T> {
   data: T[];
@@ -22,17 +20,17 @@ export async function findAll(
 ): Promise<PaginatedResult<unknown>> {
   const skip = (page - 1) * limit;
   const filter = search
-    ? { name: { $regex: search, $options: 'i' } }
+    ? { title: { $regex: search, $options: 'i' } }
     : {};
 
   const [data, total] = await Promise.all([
-    Product.find(filter)
-      .populate('category')
+    Program.find(filter)
+      .populate('sponsor')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .lean(),
-    Product.countDocuments(filter),
+    Program.countDocuments(filter),
   ]);
 
   return { data, total, page, totalPages: Math.ceil(total / limit) };
@@ -40,43 +38,41 @@ export async function findAll(
 
 export async function findById(id: string): Promise<unknown> {
   try {
-    const product = await Product.findById(id)
-      .populate('category')
+    const program = await Program.findById(id)
+      .populate('sponsor')
       .lean();
-    if (!product) throw new AppError(404, 'Producto no encontrado');
-    return product;
+    if (!program) throw new AppError(404, 'Programa no encontrado');
+    return program;
   } catch (err) {
     if (err instanceof mongoose.Error.CastError) throw new AppError(400, 'ID inválido');
     throw err;
   }
 }
 
-export async function create(dto: CreateProductDto): Promise<unknown> {
+export async function create(dto: CreateProgramDto): Promise<unknown> {
   try {
-    const product = await Product.create(dto);
-    return product.toJSON();
+    const program = await Program.create(dto);
+    return program.toJSON();
   } catch (err) {
     if (err instanceof MongoServerError && err.code === 11000) {
-      const field = Object.keys(err.keyValue ?? {})[0] ?? 'campo';
-      throw new AppError(409, `El ${field} ya está registrado`);
+      throw new AppError(409, 'Ya existe un programa con ese slug');
     }
     throw err;
   }
 }
 
-export async function update(id: string, dto: UpdateProductDto): Promise<unknown> {
+export async function update(id: string, dto: UpdateProgramDto): Promise<unknown> {
   try {
-    const product = await Product.findByIdAndUpdate(id, dto, {
+    const program = await Program.findByIdAndUpdate(id, dto, {
       new: true,
       runValidators: true,
     }).lean();
-    if (!product) throw new AppError(404, 'Producto no encontrado');
-    return product;
+    if (!program) throw new AppError(404, 'Programa no encontrado');
+    return program;
   } catch (err) {
     if (err instanceof mongoose.Error.CastError) throw new AppError(400, 'ID inválido');
     if (err instanceof MongoServerError && err.code === 11000) {
-      const field = Object.keys(err.keyValue ?? {})[0] ?? 'campo';
-      throw new AppError(409, `El ${field} ya está registrado`);
+      throw new AppError(409, 'Ya existe un programa con ese slug');
     }
     throw err;
   }
@@ -84,8 +80,8 @@ export async function update(id: string, dto: UpdateProductDto): Promise<unknown
 
 export async function remove(id: string): Promise<void> {
   try {
-    const product = await Product.findByIdAndDelete(id).lean();
-    if (!product) throw new AppError(404, 'Producto no encontrado');
+    const program = await Program.findByIdAndDelete(id).lean();
+    if (!program) throw new AppError(404, 'Programa no encontrado');
   } catch (err) {
     if (err instanceof mongoose.Error.CastError) throw new AppError(400, 'ID inválido');
     throw err;

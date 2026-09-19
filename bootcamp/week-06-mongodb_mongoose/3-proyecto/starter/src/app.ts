@@ -1,17 +1,9 @@
-// ============================================
-// app.ts — Configuración de Express
-// TODO: Actualizar las rutas según tu dominio
-// ============================================
-//
-// Cambia los segmentos de URL a los nombres de tu dominio:
-// Ejemplo para Biblioteca:
-//   /api/v1/authors   y   /api/v1/books
-// Ejemplo para Farmacia:
-//   /api/v1/suppliers y   /api/v1/medicines
+// src/app.ts — Configuración de la aplicación Express
+// Dominio: Radio Comunitaria
 
 import express from 'express';
-import secondaryRouter from './routes/secondary.routes';
-import primaryRouter from './routes/primary.routes';
+import sponsorsRouter from './routes/sponsors.routes';
+import programsRouter from './routes/programs.routes';
 import { errorHandler } from './middlewares/errorHandler';
 import { notFound } from './middlewares/notFound';
 
@@ -20,12 +12,16 @@ export const app = express();
 app.use(express.json());
 
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: 'ok',
+    week: '06',
+    project: 'radio-comunitaria-api',
+    timestamp: new Date().toISOString(),
+  });
 });
 
-// TODO: Cambiar las URLs a los nombres de tu dominio
-app.use('/api/v1/secondary', secondaryRouter);  // ej: /api/v1/authors
-app.use('/api/v1/primary',   primaryRouter);     // ej: /api/v1/books
+app.use('/api/v1/sponsors', sponsorsRouter);
+app.use('/api/v1/programs', programsRouter);
 
 app.use(notFound);
 app.use(errorHandler);
