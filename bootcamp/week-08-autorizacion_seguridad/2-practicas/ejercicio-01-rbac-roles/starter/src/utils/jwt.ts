@@ -7,13 +7,9 @@ import jwt from 'jsonwebtoken';
 export interface JwtPayload {
   sub: string;
   email: string;
-  // ============================================
-  // PASO 2: Agrega la propiedad role al payload
-  // ============================================
-  // El role debe viajar en el token para que requireRole()
-  // pueda verificarlo SIN consultar la base de datos en
-  // cada request. Descomenta la siguiente línea:
-  // role: string;
+  // El role viaja en el token para que requireRole() pueda
+  // verificarlo SIN consultar la base de datos en cada request.
+  role: string;
 }
 
 // ============================================

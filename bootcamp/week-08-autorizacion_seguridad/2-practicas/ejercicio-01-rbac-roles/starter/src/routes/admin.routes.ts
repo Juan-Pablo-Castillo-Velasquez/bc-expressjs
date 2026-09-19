@@ -6,7 +6,7 @@ import { requireRole } from '../middlewares/requireRole.js';
 const router = Router();
 
 // ============================================
-// PASO 4: Proteger rutas de admin con requireRole
+// Rutas de admin protegidas con requireRole
 // ============================================
 //
 // Todas las rutas de admin requieren:
@@ -15,14 +15,8 @@ const router = Router();
 //
 // El orden importa: authMiddleware DEBE ir ANTES que requireRole
 // porque requireRole necesita req.user que es poblado por authMiddleware.
-//
-// Descomenta las dos líneas de abajo:
-// router.use(authMiddleware);
-// router.use(requireRole('admin'));
-
-// Temporal: solo authMiddleware aplicado
-// Eliminar esta línea cuando descomentes las dos de arriba:
 router.use(authMiddleware);
+router.use(requireRole('admin'));
 
 router.get('/users', listUsers);
 router.get('/stats', getStats);
