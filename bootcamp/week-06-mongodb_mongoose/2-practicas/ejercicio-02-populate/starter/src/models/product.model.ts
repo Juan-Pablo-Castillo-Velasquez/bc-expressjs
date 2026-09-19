@@ -1,12 +1,10 @@
 // ============================================
-// PASO 1: Añadir el campo category al Schema de Producto
+// Schema de Producto — con referencia a Category
 // ============================================
 //
 // Los productos referencian categorías usando Schema.Types.ObjectId.
 // En MongoDB se almacena solo el ObjectId (24 hex chars).
 // Al usar .populate('category'), Mongoose lo reemplaza por el objeto completo.
-//
-// Descomenta las líneas marcadas como PASO 1 en la interfaz y en el schema:
 
 import { Schema, model, Types } from 'mongoose';
 
@@ -17,7 +15,7 @@ interface IProduct {
   stock: number;
   sku: string;
   active: boolean;
-  // category: Types.ObjectId;   // PASO 1: añadir a la interfaz
+  category: Types.ObjectId;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -53,12 +51,11 @@ const productSchema = new Schema<IProduct>(
       type: Boolean,
       default: true,
     },
-    // PASO 1 — descomenta el campo category:
-    // category: {
-    //   type: Schema.Types.ObjectId,  // tipo referencia
-    //   ref: 'Category',              // nombre del Model al que apunta
-    //   required: [true, 'La categoría es requerida'],
-    // },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
+      required: [true, 'La categoría es requerida'],
+    },
   },
   { timestamps: true },
 );

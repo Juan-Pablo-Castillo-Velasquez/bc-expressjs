@@ -7,7 +7,7 @@ export const objectIdSchema = z.string().regex(objectIdRegex, 'ID inválido');
 export const createProductSchema = z.object({
   name:        z.string().min(1, 'El nombre es requerido').max(100),
   description: z.string().max(500).optional(),
-  price:       z.number({ required_error: 'El precio es requerido' }).min(0),
+  price:       z.number({ error: 'El precio es requerido' }).min(0),
   stock:       z.number().int().min(0).default(0),
   sku:         z.string().min(1, 'El SKU es requerido').max(50),
   active:      z.boolean().default(true),

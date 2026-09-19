@@ -1,8 +1,7 @@
-// TODO: Renombrar el archivo y el router según tu dominio
-// Ejemplos: books.routes.ts, medicines.routes.ts, members.routes.ts
+// src/routes/sponsors.routes.ts — Rutas CRUD de Sponsor
 
 import { Router } from 'express';
-import * as ctrl from '../controllers/primary.controller';
+import * as ctrl from '../controllers/sponsors.controller';
 
 const router = Router();
 
