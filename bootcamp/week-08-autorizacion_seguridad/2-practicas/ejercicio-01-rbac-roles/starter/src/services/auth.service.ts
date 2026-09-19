@@ -35,7 +35,7 @@ export async function login(dto: LoginDto) {
   const accessToken = signAccessToken({
     sub: user._id.toString(),
     email: user.email,
-    // role: user.role,
+    role: user.role,
   });
 
   const refreshToken = signRefreshToken(user._id.toString());
@@ -58,7 +58,7 @@ export async function refreshTokens(token: string) {
   const accessToken = signAccessToken({
     sub: user._id.toString(),
     email: user.email,
-    // role: user.role,  // PASO 3: también aquí cuando descomentes arriba
+    role: user.role,
   });
 
   const newRefreshToken = signRefreshToken(user._id.toString());

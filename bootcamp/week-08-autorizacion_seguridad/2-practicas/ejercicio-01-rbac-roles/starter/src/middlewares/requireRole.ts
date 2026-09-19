@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { AppError } from '../errors/AppError.js';
 
 // ============================================
-// PASO 1: Implementar requireRole middleware
+// requireRole middleware
 // ============================================
 //
 // requireRole es una higher-order function:
@@ -14,26 +14,19 @@ import { AppError } from '../errors/AppError.js';
 //   - SIEMPRE debe ejecutarse DESPUÉS de authMiddleware
 //   - Si req.user no existe → 401 (no autenticado)
 //   - Si el role no coincide → 403 (no autorizado)
-//
-// Descomenta el bloque de código de abajo (elimina los // de cada línea):
 
 export function requireRole(...roles: string[]): RequestHandler {
-  // return (req: Request, _res: Response, next: NextFunction): void => {
-  //   if (!req.user) {
-  //     return next(new AppError(401, 'Authentication required'));
-  //   }
-  //
-  //   if (!roles.includes(req.user.role as string)) {
-  //     return next(
-  //       new AppError(403, `Access denied. Required roles: ${roles.join(', ')}`)
-  //     );
-  //   }
-  //
-  //   next();
-  // };
+  return (req: Request, _res: Response, next: NextFunction): void => {
+    if (!req.user) {
+      return next(new AppError(401, 'Authentication required'));
+    }
 
-  // Stub temporal — eliminar cuando implementes el código de arriba
-  return (_req: Request, _res: Response, next: NextFunction): void => {
-    next(new AppError(403, 'requireRole no implementado — completa el PASO 1'));
+    if (!roles.includes(req.user.role as string)) {
+      return next(
+        new AppError(403, `Access denied. Required roles: ${roles.join(', ')}`)
+      );
+    }
+
+    next();
   };
 }

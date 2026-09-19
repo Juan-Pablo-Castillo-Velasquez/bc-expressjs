@@ -30,7 +30,7 @@
     "@types/cookie-parser": "1.4.8",
     "@types/cors": "2.8.17",
     "@types/express": "5.0.3",
-    "@types/express-mongo-sanitize": "2.1.4",
+    "@types/express-mongo-sanitize": "2.1.2",
     "@types/jsonwebtoken": "9.0.9",
     "@types/node": "22.15.29",
     "tsx": "4.19.4",

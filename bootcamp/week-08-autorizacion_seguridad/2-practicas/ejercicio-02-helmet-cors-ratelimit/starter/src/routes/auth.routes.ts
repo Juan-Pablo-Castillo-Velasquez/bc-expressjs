@@ -10,14 +10,8 @@ const router = Router();
 // ============================================
 // authLimiter es más estricto: solo 5 intentos por IP / 15 min.
 // Protege contra brute force en endpoints de autenticación.
-// Descomenta las dos líneas de abajo que usan authLimiter:
-
-// router.post('/register', authLimiter, register);
-// router.post('/login', authLimiter, login);
-
-// Temporal: sin rate limit en auth (eliminar cuando descomentes arriba)
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register', authLimiter, register);
+router.post('/login', authLimiter, login);
 
 router.post('/refresh', refresh);
 router.post('/logout', authMiddleware, logout);
