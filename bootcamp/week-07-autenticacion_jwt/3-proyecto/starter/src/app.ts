@@ -1,7 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.routes';
-import resourceRouter from './routes/resource.routes';
+import schedulesRouter from './routes/schedules.routes';
 import { errorHandler } from './middlewares/errorHandler';
 import { notFound } from './middlewares/notFound';
 
@@ -13,12 +13,8 @@ app.use(cookieParser());
 // Rutas de autenticación
 app.use('/api/v1/auth', authRouter);
 
-// TODO: Cambia '/api/v1/resources' por la ruta plural de tu recurso.
-// Ejemplos:
-//   app.use('/api/v1/books', resourceRouter);
-//   app.use('/api/v1/medications', resourceRouter);
-//   app.use('/api/v1/members', resourceRouter);
-app.use('/api/v1/resources', resourceRouter);
+// Rutas del recurso principal — Schedule (horarios de emisión)
+app.use('/api/v1/schedules', schedulesRouter);
 
 // Middlewares de errores (siempre al final)
 app.use(notFound);

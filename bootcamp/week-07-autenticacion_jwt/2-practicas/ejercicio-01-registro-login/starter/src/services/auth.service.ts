@@ -1,8 +1,6 @@
 // ============================================
 // PASO 2: Servicio de Autenticación
 // ============================================
-//
-// Descomenta las secciones marcadas en register() y login():
 
 import bcrypt from 'bcrypt';
 import * as usersRepository from '../repositories/users.repository';
@@ -19,15 +17,13 @@ export async function register(dto: RegisterDto) {
   }
 
   // PASO 2a: Hashear la contraseña antes de guardar
-  // Descomenta las siguientes líneas y elimina el throw de abajo:
-  // const hashedPassword = await bcrypt.hash(dto.password, 10);
-  // const user = await usersRepository.create({ ...dto, password: hashedPassword });
-  throw new Error('register not implemented — descomenta el PASO 2a');
+  const hashedPassword = await bcrypt.hash(dto.password, 10);
+  const user = await usersRepository.create({ ...dto, password: hashedPassword });
 
   // Retornar datos del usuario sin contraseña
-  // const userObj = user.toObject() as Record<string, unknown>;
-  // delete userObj['password'];
-  // return userObj;
+  const userObj = user.toObject() as unknown as Record<string, unknown>;
+  delete userObj['password'];
+  return userObj;
 }
 
 // ── Login ─────────────────────────────────────────────────────────────────────
@@ -42,21 +38,19 @@ export async function login(dto: LoginDto) {
   }
 
   // PASO 2b: Comparar la contraseña ingresada con el hash almacenado
-  // Descomenta las siguientes líneas y elimina el throw de abajo:
-  // const passwordStr = user.password as string;
-  // const isValid = await bcrypt.compare(dto.password, passwordStr);
-  // if (!isValid) {
-  //   throw new AppError(401, 'Credenciales inválidas');
-  // }
-  throw new Error('login not implemented — descomenta el PASO 2b');
+  const passwordStr = user.password as string;
+  const isValid = await bcrypt.compare(dto.password, passwordStr);
+  if (!isValid) {
+    throw new AppError(401, 'Credenciales inválidas');
+  }
 
   // Firmar y retornar el access token
-  // const token = signAccessToken({
-  //   sub: user._id.toString(),
-  //   email: user.email as string,
-  //   role: (user.role as string) ?? 'user',
-  // });
-  // return { token, user: { id: user._id, email: user.email, name: user.name, role: user.role } };
+  const token = signAccessToken({
+    sub: user._id.toString(),
+    email: user.email as string,
+    role: (user.role as string) ?? 'user',
+  });
+  return { token, user: { id: user._id, email: user.email, name: user.name, role: user.role } };
 }
 
 // ── Me ────────────────────────────────────────────────────────────────────────

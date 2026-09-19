@@ -3,7 +3,6 @@
 // ============================================
 //
 // La ruta GET /me debe estar protegida por authMiddleware.
-// Descomenta la línea indicada:
 
 import { Router } from 'express';
 import { authMiddleware } from '../middlewares/auth.middleware';
@@ -15,9 +14,7 @@ const router = Router();
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 
-// PASO 5: Añadir authMiddleware a la ruta /me
-// Descomenta la siguiente línea y elimina la de abajo:
-// router.get('/me', authMiddleware, authController.me);
-router.get('/me', authController.me);  // ← eliminar cuando descomentes la línea de arriba
+// PASO 5: Ruta protegida
+router.get('/me', authMiddleware, authController.me);
 
 export { router as authRouter };

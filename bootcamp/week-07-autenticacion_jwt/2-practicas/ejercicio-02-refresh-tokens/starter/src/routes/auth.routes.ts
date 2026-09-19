@@ -1,8 +1,6 @@
 // ============================================
 // PASO 5: Rutas con /refresh y /logout
 // ============================================
-//
-// Descomenta las rutas de POST /refresh y POST /logout:
 
 import { Router } from 'express';
 import { authMiddleware } from '../middlewares/auth.middleware';
@@ -14,8 +12,8 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.get('/me', authMiddleware, authController.me);
 
-// PASO 5: Descomenta las siguientes rutas:
-// router.post('/refresh', authController.refresh);
-// router.post('/logout', authMiddleware, authController.logout);
+// PASO 5: Rutas de refresh y logout
+router.post('/refresh', authController.refresh);
+router.post('/logout', authMiddleware, authController.logout);
 
 export { router as authRouter };

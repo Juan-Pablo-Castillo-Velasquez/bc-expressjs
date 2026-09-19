@@ -16,7 +16,7 @@ export async function register(dto: RegisterDto) {
   const hashedPassword = await bcrypt.hash(dto.password, 10);
   const user = await usersRepository.create({ ...dto, password: hashedPassword });
 
-  const userObj = user.toObject() as Record<string, unknown>;
+  const userObj = user.toObject() as unknown as Record<string, unknown>;
   delete userObj['password'];
   return userObj;
 }
@@ -39,71 +39,56 @@ export async function login(dto: LoginDto) {
   });
 
   // PASO 3a: Generar refresh token y guardar su hash en DB
-  // Descomenta las siguientes líneas y elimina el return actual:
-  // const refreshToken = signRefreshToken({ sub: userId });
-  // const hashedRefresh = await bcrypt.hash(refreshToken, 10);
-  // await usersRepository.updateRefreshToken(userId, hashedRefresh);
-  // return {
-  //   accessToken,
-  //   refreshToken,
-  //   user: { id: user._id, email: user.email, name: user.name, role: user.role },
-  // };
-
+  const refreshToken = signRefreshToken({ sub: userId });
+  const hashedRefresh = await bcrypt.hash(refreshToken, 10);
+  await usersRepository.updateRefreshToken(userId, hashedRefresh);
   return {
     accessToken,
-    refreshToken: null as unknown as string, // ← eliminar cuando descomentes PASO 3a
+    refreshToken,
     user: { id: user._id, email: user.email, name: user.name, role: user.role },
   };
 }
 
 // ── Refresh ────────────────────────────────────────────────────────────────────
-// PASO 3b: Implementar rotación de refresh token
-// export async function refresh(incomingRefreshToken: string) {
-//   // 1. Verificar JWT del refresh token
-//   let payload: { sub: string };
-//   try {
-//     payload = verifyRefreshToken(incomingRefreshToken);
-//   } catch {
-//     throw new AppError(401, 'Refresh token inválido');
-//   }
-//
-//   // 2. Buscar el usuario con el hash almacenado
-//   const user = await usersRepository.findByIdWithTokens(payload.sub);
-//   if (!user || !user.refreshToken) {
-//     throw new AppError(401, 'Refresh token inválido');
-//   }
-//
-//   // 3. Comparar el token recibido con el hash almacenado
-//   const isMatch = await bcrypt.compare(incomingRefreshToken, user.refreshToken as string);
-//   if (!isMatch) throw new AppError(401, 'Refresh token inválido o ya rotado');
-//
-//   // 4. Rotar: generar nuevos tokens y actualizar hash en DB
-//   const userId = user._id.toString();
-//   const newAccessToken = signAccessToken({
-//     sub: userId,
-//     email: user.email as string,
-//     role: (user.role as string) ?? 'user',
-//   });
-//   const newRefreshToken = signRefreshToken({ sub: userId });
-//   const newHashedRefresh = await bcrypt.hash(newRefreshToken, 10);
-//   await usersRepository.updateRefreshToken(userId, newHashedRefresh);
-//
-//   return { accessToken: newAccessToken, refreshToken: newRefreshToken };
-// }
+// PASO 3b: Rotación de refresh token
+export async function refresh(incomingRefreshToken: string) {
+  // 1. Verificar JWT del refresh token
+  let payload: { sub: string };
+  try {
+    payload = verifyRefreshToken(incomingRefreshToken);
+  } catch {
+    throw new AppError(401, 'Refresh token inválido');
+  }
 
-export async function refresh(_incomingRefreshToken: string): Promise<never> {
-  throw new Error('refresh not implemented — descomenta el PASO 3b');
+  // 2. Buscar el usuario con el hash almacenado
+  const user = await usersRepository.findByIdWithTokens(payload.sub);
+  if (!user || !user.refreshToken) {
+    throw new AppError(401, 'Refresh token inválido');
+  }
+
+  // 3. Comparar el token recibido con el hash almacenado
+  const isMatch = await bcrypt.compare(incomingRefreshToken, user.refreshToken as string);
+  if (!isMatch) throw new AppError(401, 'Refresh token inválido o ya rotado');
+
+  // 4. Rotar: generar nuevos tokens y actualizar hash en DB
+  const userId = user._id.toString();
+  const newAccessToken = signAccessToken({
+    sub: userId,
+    email: user.email as string,
+    role: (user.role as string) ?? 'user',
+  });
+  const newRefreshToken = signRefreshToken({ sub: userId });
+  const newHashedRefresh = await bcrypt.hash(newRefreshToken, 10);
+  await usersRepository.updateRefreshToken(userId, newHashedRefresh);
+
+  return { accessToken: newAccessToken, refreshToken: newRefreshToken };
 }
 
 // ── Logout ────────────────────────────────────────────────────────────────────
-// PASO 3c: Implementar logout
-// export async function logout(userId: string): Promise<void> {
-//   // Eliminar el hash del refresh token del documento del usuario
-//   await usersRepository.updateRefreshToken(userId, undefined);
-// }
-
-export async function logout(_userId: string): Promise<void> {
-  throw new Error('logout not implemented — descomenta el PASO 3c');
+// PASO 3c: Logout
+export async function logout(userId: string): Promise<void> {
+  // Eliminar el hash del refresh token del documento del usuario
+  await usersRepository.updateRefreshToken(userId, undefined);
 }
 
 // ── Me ────────────────────────────────────────────────────────────────────────

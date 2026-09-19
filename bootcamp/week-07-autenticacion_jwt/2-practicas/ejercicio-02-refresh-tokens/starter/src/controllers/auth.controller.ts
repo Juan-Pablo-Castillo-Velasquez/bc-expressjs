@@ -13,12 +13,12 @@ function setTokenCookies(res: Response, accessToken: string, refreshToken: strin
   res.cookie('accessToken', accessToken, {
     ...COOKIE_BASE,
     path: '/',
-    maxAge: 15 * 60 * 1000,             // 15 min
+    maxAge: 15 * 60 * 1000, // 15 min
   });
   res.cookie('refreshToken', refreshToken, {
     ...COOKIE_BASE,
-    path: '/api/v1/auth',               // solo se envía a rutas auth
-    maxAge: 7 * 24 * 60 * 60 * 1000,   // 7 días
+    path: '/api/v1/auth', // solo se envía a rutas auth
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
   });
 }
 
@@ -73,42 +73,34 @@ export async function me(req: Request, res: Response, next: NextFunction): Promi
 }
 
 // ── Refresh ───────────────────────────────────────────────────────────────────
-// PASO 4a: Descomenta el handler de refresh:
-// export async function refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
-//   try {
-//     const incomingToken = req.cookies?.refreshToken as string | undefined;
-//     if (!incomingToken) {
-//       next(new AppError(401, 'No autenticado'));
-//       return;
-//     }
-//     const { accessToken, refreshToken } = await authService.refresh(incomingToken);
-//     setTokenCookies(res, accessToken, refreshToken);
-//     res.status(200).json({ message: 'Token renovado' });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
-export async function refresh(_req: Request, res: Response, next: NextFunction): Promise<void> {
-  next(new AppError(501, 'refresh not implemented — descomenta el PASO 4a'));
+// PASO 4a: Handler de refresh
+export async function refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const incomingToken = req.cookies?.refreshToken as string | undefined;
+    if (!incomingToken) {
+      next(new AppError(401, 'No autenticado'));
+      return;
+    }
+    const { accessToken, refreshToken } = await authService.refresh(incomingToken);
+    setTokenCookies(res, accessToken, refreshToken);
+    res.status(200).json({ message: 'Token renovado' });
+  } catch (err) {
+    next(err);
+  }
 }
 
 // ── Logout ────────────────────────────────────────────────────────────────────
-// PASO 4b: Descomenta el handler de logout:
-// export async function logout(req: Request, res: Response, next: NextFunction): Promise<void> {
-//   try {
-//     if (!req.user) {
-//       next(new AppError(401, 'No autenticado'));
-//       return;
-//     }
-//     await authService.logout(req.user.sub);
-//     clearTokenCookies(res);
-//     res.status(200).json({ message: 'Sesión cerrada' });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
-export async function logout(_req: Request, res: Response, next: NextFunction): Promise<void> {
-  next(new AppError(501, 'logout not implemented — descomenta el PASO 4b'));
+// PASO 4b: Handler de logout
+export async function logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    if (!req.user) {
+      next(new AppError(401, 'No autenticado'));
+      return;
+    }
+    await authService.logout(req.user.sub);
+    clearTokenCookies(res);
+    res.status(200).json({ message: 'Sesión cerrada' });
+  } catch (err) {
+    next(err);
+  }
 }
