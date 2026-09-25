@@ -22,7 +22,7 @@ export async function register(dto: RegisterDto): Promise<Record<string, unknown
     role: 'user',
   });
 
-  const { password: _pwd, ...safeUser } = user as Record<string, unknown>;
+  const { password: _pwd, ...safeUser } = user as unknown as Record<string, unknown>;
   return safeUser;
 }
 
@@ -54,6 +54,6 @@ export async function getMe(userId: string): Promise<Record<string, unknown>> {
     throw new AppError(404, 'User not found');
   }
 
-  const { password: _pwd, ...safeUser } = user as Record<string, unknown>;
+  const { password: _pwd, ...safeUser } = user as unknown as Record<string, unknown>;
   return safeUser;
 }
