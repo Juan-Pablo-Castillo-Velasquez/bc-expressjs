@@ -13,7 +13,7 @@ export async function register(dto: RegisterDto): Promise<Record<string, unknown
   const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
   const user = await usersRepo.createUser({ ...dto, password: hashedPassword, role: 'user' });
 
-  const { password: _p, ...safeUser } = user as Record<string, unknown>;
+  const { password: _p, ...safeUser } = user as unknown as Record<string, unknown>;
   return safeUser;
 }
 
@@ -35,6 +35,6 @@ export async function getMe(userId: string): Promise<Record<string, unknown>> {
   const user = await usersRepo.findUserById(userId);
   if (!user) throw new AppError(404, 'User not found');
 
-  const { password: _p, ...safeUser } = user as Record<string, unknown>;
+  const { password: _p, ...safeUser } = user as unknown as Record<string, unknown>;
   return safeUser;
 }

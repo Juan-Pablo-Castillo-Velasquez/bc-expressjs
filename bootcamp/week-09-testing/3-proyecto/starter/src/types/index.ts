@@ -16,30 +16,20 @@ export interface TokenPayload {
   role: UserRole;
 }
 
-// ============================================================
-// Adaptar estos tipos al dominio asignado
-// Ejemplos:
-//   Biblioteca  → CreateBookDto, UpdateBookDto
-//   Farmacia    → CreateMedicineDto, UpdateMedicineDto
-//   Gimnasio    → CreateMemberDto, UpdateMemberDto
-// ============================================================
+export type SponsorStatus = 'active' | 'inactive';
 
-export interface CreateItemDto {
-  // TODO: Adaptar al dominio asignado
-  // Ejemplo biblioteca:
-  //   title: string;
-  //   isbn: string;
-  //   authorId: string;
-  // Ejemplo farmacia:
-  //   name: string;
-  //   activeIngredient: string;
-  //   stock: number;
+export interface CreateSponsorDto {
   name: string;
-  description?: string;
+  contactEmail: string;
+  contactPhone?: string;
+  contributionAmount?: number;
+  status?: SponsorStatus;
 }
 
-export interface UpdateItemDto {
-  // TODO: Adaptar al dominio asignado (todos los campos opcionales en update)
+export interface UpdateSponsorDto {
   name?: string;
-  description?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  contributionAmount?: number;
+  status?: SponsorStatus;
 }
